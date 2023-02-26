@@ -59,7 +59,27 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  //Estoy accediendo a un sonido que se escuche directamente en la window de google, he llamado al evento que quiero que funcione  keydown y a la función e, que es una letra
+  //reservada para acceder a eventos de esta función de eventlistener,
+  //en el consolelog estoy accediendo a uno muy concreto que es keycode
 
+function playSound(e) {
+  const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+  const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+  if (!audio) return; //en caso de que audioqueBusco no exita (no haya referencia en el teclado), se parará la función
+  audio.currentTime = 0; // empezar desde el comienzo
+  audio.play();
+  key.classList.add('playing');
+}
+function removeTransition(e) {
+  if (e.propertyName !== 'transform') return; // se lo salta si no es un tranform
+  this.classList.remove('playing');
+}
+
+
+const keys = document.querySelectorAll('key');
+keys.forEach(key =>key.addEventListener('transitioned', removeTransition));
+window.addEventListener ('keydown', playSound);
 </script>
 
 
